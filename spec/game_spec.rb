@@ -11,7 +11,7 @@ describe "Game" do
 		    expect(Game::WINNING_COMBOS).to include([1,4,7])
 		    expect(Game::WINNING_COMBOS).to include([2,5,8])
 		    expect(Game::WINNING_COMBOS).to include([0,4,8])
-		    expect(Game::WINNING_COMBOS).to include([2, 4, 6])
+		    expect(Game::WINNING_COMBOS).to include([2,4,6])
 		end
 	end
 
