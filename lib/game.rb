@@ -13,10 +13,14 @@ class Game
 	    [0,4,8]
 	]
 
-	def initialize(player_1, player_2, board)
-	    @player_1 = player_1
-	    @player_2 = player_2
-	    @board = board
+	def initialize(player_1, player_2)
+	    @player_1 = Human.new(player_1)
+	    @player_2 = Computer.new(player_2)
+	    @board = Board.new
+	end
+
+	def play
+
 	end
 
 end
