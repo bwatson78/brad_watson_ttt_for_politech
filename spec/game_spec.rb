@@ -18,9 +18,11 @@ describe "Game" do
 	context "#initialize" do
 		it "creates an instance of a game" do
 			game_1 = Game.new("player1", "player2", "board")
-			expect(game_1.player1).to eq("player1")
-			
+			expect(game_1.player_1).to eq("player1")
+			expect(game_1.player_2).to eq("player2")
+			expect(game_1.board).to eq("board")
 		end
+	end
 
 
 end

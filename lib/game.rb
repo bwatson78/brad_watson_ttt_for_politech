@@ -1,5 +1,7 @@
 class Game
 
+	attr_accessor :player_1, :player_2, :board
+
 	WINNING_COMBOS = [
 		[0,1,2],
 	    [3,4,5],
