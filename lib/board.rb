@@ -13,12 +13,8 @@ class Board
 		"c3" => 8
 	}
 
-	def clean_board
-		@spaces = Array.new(9, " ")
-	end
-
 	def initialize
-		clean_board
+		@spaces = Array.new(9, " ")
 	end
 
 	def show
@@ -33,6 +29,31 @@ class Board
 	end
 
 	def place(piece, space)
-		@spaces[SPACE_TO_INDEX[space]] = piece
+		@spaces[Board.space_index(space)] = piece
+	end
+
+	def self.space_index(space)
+		SPACE_TO_INDEX[space.downcase]
+	end
+
+	def space_value(space)
+		@spaces[Board.space_index(space)]
+	end
+
+	def self.space_keys
+		SPACE_TO_INDEX.keys
+	end
+
+	def valid_move?(space)
+		result = space_value(space)
+		(result == "X" || result == "O") ? false : true
+	end
+
+	def turn_count
+		@spaces.count{|piece| piece == "X" || piece == "O"}
+	end
+
+	def full?
+		turn_count == 9	
 	end
 end
