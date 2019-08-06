@@ -75,7 +75,11 @@ describe "Board" do
 			@board.spaces[2] = " "
 			expect(@board.valid_move?("A3")).to eq(true)
 		end
-	end
+
+		it "checks if the requested space exists in the approved keys, returns false if not" do 
+			expect(@board.valid_move?("A4")).to eq(false)
+		end
+	end 
 
 	context "#turn_count" do
 		it "returns the right amount of turns" do
@@ -93,6 +97,17 @@ describe "Board" do
 		it "returns false if not all spaces taken" do 
 			@board.spaces = ["X", "X", "X", " ", " ", " ", " ", " ", " "]
 			expect(@board.full?).to eq(false)
+		end
+	end
+
+	context "#taken?" do
+		it "returns true if player piece in space" do
+			@board.place("X", "A2")
+			expect(@board.taken?("A2")).to eq(true)
+		end
+
+		it "returns false if space is empty" do
+			expect(@board.taken?("A3")).to eq(false)
 		end
 	end
 

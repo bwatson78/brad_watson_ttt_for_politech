@@ -8,6 +8,11 @@ until ["x", "o"].include? piece.downcase
 	Dialogue.try_again
 	piece = gets.strip
 end
-game = (piece.downcase == "x" ? Game.new("X", "O") : Game.new("O", "X"))
+if piece.downcase == "x"
+	game = Game.new(Human.new("X"), Computer.new("O"))
+else 
+	game = Game.new(Computer.new("X"), Human.new("O"))
+end
+game.play until game.over?
 Dialogue.goodbye
 

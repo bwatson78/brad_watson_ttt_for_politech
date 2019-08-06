@@ -44,9 +44,9 @@ class Board
 		SPACE_TO_INDEX.keys
 	end
 
-	def valid_move?(space)
-		result = space_value(space)
-		(result == "X" || result == "O") ? false : true
+	def valid_move?(space)	
+		return false if !(Board.space_keys.include?(space.downcase))
+		!taken?(space)
 	end
 
 	def turn_count
@@ -55,5 +55,10 @@ class Board
 
 	def full?
 		turn_count == 9	
+	end
+
+	def taken?(space)
+		result = space.is_a?(Integer) ? @spaces[space] : space_value(space)
+		(result == "X" || result == "O") ? true : false
 	end
 end

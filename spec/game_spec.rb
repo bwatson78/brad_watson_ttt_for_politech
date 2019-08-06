@@ -2,6 +2,10 @@ require "./lib/game.rb"
 require "spec_helper"
 
 describe "Game" do 
+	before(:each) do 
+		@game = Game.new(Human.new("X"), Computer.new("O"))
+	end
+
 	context "::WINNING_COMBOS" do
 		it "includes all possible Winning Combinations" do
 			expect(Game::WINNING_COMBOS).to include([0,1,2])
@@ -17,45 +21,84 @@ describe "Game" do
 
 	context "#initialize" do
 		it "creates an instance of a game" do
-			game_1 = Game.new("player1", "player2")
-			expect(game_1.player_1).to be_instance_of(Human)
-			expect(game_1.player_2).to be_instance_of(Computer)
-			expect(game_1.board).to be_instance_of(Board)
+			expect(@game.player_1).to be_instance_of(Human)
+			expect(@game.player_2).to be_instance_of(Computer)
+			expect(@game.board).to be_instance_of(Board)
 		end
 	end
 
-	context "#play" do 
-		it "asks for the players move" do
+	context "#current_player" do
+		it "returns the player that goes next (player1)" do
+			@game.board.spaces = ["X", "O", "X", " ", " ", " ", " ", " ", " "]
+			expect(@game.current_player).to eq(@game.player_2)
 		end
 
-		it "checks if game is over after every turn" do 
+		it "returns the player that goes next (player2)" do
+			@game.board.spaces = ["X", "O", "X", "X", " ", " ", " ", " ", " "]
+			expect(@game.current_player).to eq(@game.player_1)
+		end
+	end
+
+	context "#won?" do
+		it "returns the winning combo if the game has been won" do 
+			@game.board.spaces = ["X", "X", "X", "O", " ", " ", " ", " ", " "]
+			expect(@game.won?).to eq([0, 1, 2])
 		end
 
-		it "updates the game board" do
+		it "returns false if no win found" do 
+			@game.board.spaces = ["X", "O", "X", "O", " ", " ", " ", " ", " "]
+			expect(@game.won?).to eq(false)
+		end
+	end
+
+	context "#draw?" do
+		it "returns true if board is full and nobody won" do
+			@game.board.spaces = ["X", "O", "X", "O", "X", "X", "O", "X", "O"]
+			expect(@game.draw?).to eq(true)
 		end
 
-		it "checks to see if the game is won after every turn" do
+		it "returns false if board is full and somebody won" do
+			@game.board.spaces = ["X", "O", "X", "O", "X", "X", "O", "O", "X"]
+			expect(@game.draw?).to eq(false)
 		end
 
-		it "also checks to see if the game is a draw after every turn" do
+		it "returns false if the game board isn't full" do
+			@game.board.spaces = ["X", "X", "X", "O", " ", " ", " ", " ", " "]
+			expect(@game.draw?).to eq(false)
+		end
+	end
+
+	context "#over" do
+		it "returns true if game has been won" do 
+			@game.board.spaces = ["X", "X", "X", "O", " ", " ", " ", " ", " "]
+			expect(@game.over?).to eq(true)
 		end
 
-		it "stops playing if the game has been won" do
+		it "returns true if game ends in draw" do 
+			@game.board.spaces = ["X", "O", "X", "O", "X", "X", "O", "X", "O"]
+			expect(@game.over?).to eq(true)
 		end
 
-		it "stops if there is a draw" do 
+		it "returns true if board is full" do
+			@game.board.spaces = ["X", "O", "X", "O", "X", "X", "O", "O", "X"]
+			expect(@game.over?).to eq(true)
 		end
 
-		it "congratulates X if won" do
+		it "returns false if game is in progress" do 
+			@game.board.spaces = ["X", "O", "X", "O", " ", " ", " ", " ", " "]
+			expect(@game.over?).to eq(false)
+		end
+	end
+
+	context "#winner" do
+		it "returns player_1 when they win" do
+			@game.board.spaces = ["X", "X", "X", "O", " ", " ", " ", " ", " "]
+			expect(@game.winner).to eq(@game.player_1)
 		end
 
-		it "congratulates O if won" do 
-		end
-
-		it "annouces draw if tied" do
-		end
-
-		it "goes through an entire game" do
+		it "returns player_2 when they win" do 
+			@game.board.spaces = ["O", "O", "O", "X", " ", " ", " ", " ", " "]
+			expect(@game.winner).to eq(@game.player_2)
 		end
 	end
 
